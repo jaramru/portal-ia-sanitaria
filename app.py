@@ -1,40 +1,63 @@
 import streamlit as st
 
 # Configuración general
-st.set_page_config(page_title="Portal IA Sanitaria", page_icon="🏥", layout="wide")
+st.set_page_config(
+    page_title="Portal de IA Generativa Servicios Generales",
+    page_icon="🏥",
+    layout="wide"
+)
 
-# Título y bienvenida
-st.title("🏥 Portal de Aplicaciones IA Sanitaria")
-st.markdown("""
-Bienvenido al **portal unificado de herramientas de IA** para el sector sanitario.  
-Aquí puedes acceder directamente a cada aplicación desplegada en **Streamlit Cloud**.
-""")
+# Encabezado con logo y título
+col1, col2 = st.columns([1,5])
+with col1:
+    st.image("logo.png", width=80)  # coloca aquí tu logo en la carpeta del proyecto
+with col2:
+    st.title("Portal de IA Generativa Servicios Generales")
+    st.markdown("### Herramientas de apoyo para la gestión predictiva, documental y estratégica")
 
-# Menú lateral
-st.sidebar.title("📌 Navegación")
-opcion = st.sidebar.radio("Selecciona una aplicación:", [
-    "🏗 Gemini Assist (Mantenimiento Predictivo)",
-    "📑 SmartDocs GPT (Documentación Normativa)",
-    "🤝 GenAI-Prove (Contratación Estratégica)",
-    "📊 Dashboards y Otros Recursos"
-])
+st.write("---")
 
-# Secciones
-if opcion.startswith("🏗 Gemini Assist"):
-    st.subheader("🏗 Gemini Assist")
-    st.markdown("🔗 [Abrir aplicación Gemini Assist](https://gemini-assist-app-5j6m9sqqzjzycxmiprla2u.streamlit.app/)")
+# Navegación con estilo profesional
+st.markdown("## 📌 Selecciona la aplicación que quieras abrir:")
 
-elif opcion.startswith("📑 SmartDocs GPT"):
-    st.subheader("📑 SmartDocs GPT")
-    st.markdown("🔗 [Abrir aplicación SmartDocs GPT](https://smartdocsgpt-ctkktu6gynceqzwtyz6z7n.streamlit.app/)")
+col1, col2, col3, col4 = st.columns(4)
 
-elif opcion.startswith("🤝 GenAI-Prove"):
-    st.subheader("🤝 GenAI-Prove")
-    st.markdown("🔗 [Abrir aplicación GenAI-Prove](https://genai-prove-web-fayvacbmbzevljbjappyo5o.streamlit.app/)")
+with col1:
+    st.markdown("### 🏗 Gemini Assist")
+    st.write("Mantenimiento predictivo y priorización de intervenciones.")
+    st.link_button("Abrir", "https://gemini-assist-app-5j6m9sqqzjzycxmiprla2u.streamlit.app/")
 
-elif opcion.startswith("📊 Dashboards y Otros Recursos"):
-    st.subheader("📊 Otros proyectos disponibles")
-    st.markdown("- 🏥 [Portal Normativa Hospitalaria](https://ejemplo-normativa.streamlit.app/)")
-    st.markdown("- 🧾 [Cuadro de Mando RRHH Hospitalarios](https://ejemplo-rrhh.streamlit.app/)")
-    st.markdown("- ⚙️ [Panel de Mantenimiento de Instalaciones](https://ejemplo-mantenimiento.streamlit.app/)")
-    st.markdown("- 🌍 [SmartGenAI – Información General](https://ejemplo-info.streamlit.app/)")
+with col2:
+    st.markdown("### 📑 SmartDocs GPT")
+    st.write("Automatización documental y validación normativa.")
+    st.link_button("Abrir", "https://smartdocsgpt-ctkktu6gynceqzwtyz6z7n.streamlit.app/")
+
+with col3:
+    st.markdown("### 🤝 GenAI-Prove")
+    st.write("Contratación estratégica y valoración de ofertas.")
+    st.link_button("Abrir", "https://genai-prove-web-fayvacbmbzevljbjappyo5o.streamlit.app/")
+
+with col4:
+    st.markdown("### ⚖️ LegisIA Sanidad EU")
+    st.write("Asesoramiento normativo y jurídico en IA y Sanidad (UE).")
+    st.link_button("Abrir", "https://chatgpt.com/g/g-68d56223e0a48191862830df0aa2aadd-legisia-sanidad-eu")
+
+st.write("---")
+
+# Otros recursos
+st.markdown("## 📊 Otros recursos y dashboards")
+col5, col6 = st.columns(2)
+
+with col5:
+    st.markdown("### 🏥 Portal Normativa Hospitalaria")
+    st.link_button("Abrir", "https://ejemplo-normativa.streamlit.app/")
+
+    st.markdown("### 🧾 Cuadro de Mando RRHH")
+    st.link_button("Abrir", "https://ejemplo-rrhh.streamlit.app/")
+
+with col6:
+    st.markdown("### ⚙️ Panel de Mantenimiento")
+    st.link_button("Abrir", "https://ejemplo-mantenimiento.streamlit.app/")
+
+    st.markdown("### 🌍 SmartGenAI – Información General")
+    st.link_button("Abrir", "https://ejemplo-info.streamlit.app/")

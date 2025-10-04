@@ -7,44 +7,52 @@ st.set_page_config(
     layout="wide"
 )
 
-# Contraseña desde secrets
-PASSWORD = st.secrets["PASSWORD"]
+# Cargar usuarios desde secrets
+USERS = st.secrets["USERS"]
 
-# Inicializar estado de login
+# Estado inicial
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
+    st.session_state.user = None
+    st.session_state.role = None
 
 # Si NO ha iniciado sesión
 if not st.session_state.logged_in:
     st.sidebar.title("🔒 Acceso restringido")
-    password = st.sidebar.text_input("Introduce la contraseña:", type="password")
+    username = st.sidebar.text_input("Usuario:")
+    password = st.sidebar.text_input("Contraseña:", type="password")
 
-    if password == PASSWORD:
-        st.session_state.logged_in = True
-        st.sidebar.empty()
-        st.experimental_rerun()  # recarga la app limpia
-    elif password:
-        st.error("Acceso denegado ❌")
-        st.stop()
+    if st.sidebar.button("Iniciar sesión"):
+        if username in USERS and USERS[username]["password"] == password:
+            st.session_state.logged_in = True
+            st.session_state.user = username
+            st.session_state.role = USERS[username]["role"]
+            st.sidebar.success(f"Bienvenido {username} 👋")
+            st.rerun()
+        else:
+            st.error("Usuario o contraseña incorrectos ❌")
+            st.stop()
     else:
         st.stop()
 
 # ------------------------------
-# Si la contraseña es correcta, carga la app
+# Si la autenticación fue correcta
 # ------------------------------
 
-# Botón de logout en la barra lateral
+# Botón de logout
 if st.sidebar.button("🚪 Cerrar sesión"):
     st.session_state.logged_in = False
-    st.experimental_rerun()
+    st.session_state.user = None
+    st.session_state.role = None
+    st.rerun()
 
-# Encabezado con logo y título
+# Encabezado
 col1, col2 = st.columns([1,5])
 with col1:
     st.image("logo.png", width=80)
 with col2:
     st.title("Portal de IA Generativa Servicios Generales")
-    st.markdown("### Herramientas de apoyo para la gestión predictiva, documental y estratégica")
+    st.markdown(f"### Bienvenido **{st.session_state.user}** 👋 (Rol: **{st.session_state.role.upper()}**)")
 
 st.write("---")
 
@@ -75,20 +83,21 @@ with col4:
 
 st.write("---")
 
-# Otros recursos
-st.markdown("## 📊 Otros recursos y dashboards")
-col5, col6 = st.columns(2)
+# Otros recursos según rol
+if st.session_state.role == "admin":
+    st.success("🔐 Acceso completo (Admin)")
+    col5, col6 = st.columns(2)
+    with col5:
+        st.markdown("### 🏥 Portal Normativa Hospitalaria")
+        st.link_button("Abrir", "https://ejemplo-normativa.streamlit.app/")
+        st.markdown("### 🧾 Cuadro de Mando RRHH")
+        st.link_button("Abrir", "https://ejemplo-rrhh.streamlit.app/")
+    with col6:
+        st.markdown("### ⚙️ Panel de Mantenimiento")
+        st.link_button("Abrir", "https://ejemplo-mantenimiento.streamlit.app/")
+        st.markdown("### 🌍 SmartGenAI – Información General")
+        st.link_button("Abrir", "https://ejemplo-info.streamlit.app/")
 
-with col5:
-    st.markdown("### 🏥 Portal Normativa Hospitalaria")
-    st.link_button("Abrir", "https://ejemplo-normativa.streamlit.app/")
-
-    st.markdown("### 🧾 Cuadro de Mando RRHH")
-    st.link_button("Abrir", "https://ejemplo-rrhh.streamlit.app/")
-
-with col6:
-    st.markdown("### ⚙️ Panel de Mantenimiento")
-    st.link_button("Abrir", "https://ejemplo-mantenimiento.streamlit.app/")
-
-    st.markdown("### 🌍 SmartGenAI – Información General")
-    st.link_button("Abrir", "https://ejemplo-info.streamlit.app/")
+else:
+    st.warning("🔑 Acceso limitado (Usuario)")
+    st.info("Contacta con el administrador para permisos adicionales.")

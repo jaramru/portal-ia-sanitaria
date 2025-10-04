@@ -1,6 +1,6 @@
 import streamlit as st
 
-# Configuración general
+# Configuración
 st.set_page_config(
     page_title="Portal de IA Generativa Servicios Generales",
     page_icon="🏥",
@@ -10,22 +10,38 @@ st.set_page_config(
 # Contraseña desde secrets
 PASSWORD = st.secrets["PASSWORD"]
 
-# Pantalla de login
-st.sidebar.title("🔒 Acceso restringido")
-password = st.sidebar.text_input("Introduce la contraseña:", type="password")
+# Inicializar estado de login
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
-if password != PASSWORD:
-    st.error("Acceso denegado ❌. Introduce la clave correcta.")
-    st.stop()
+# Si NO ha iniciado sesión
+if not st.session_state.logged_in:
+    st.sidebar.title("🔒 Acceso restringido")
+    password = st.sidebar.text_input("Introduce la contraseña:", type="password")
+
+    if password == PASSWORD:
+        st.session_state.logged_in = True
+        st.sidebar.empty()
+        st.experimental_rerun()  # recarga la app limpia
+    elif password:
+        st.error("Acceso denegado ❌")
+        st.stop()
+    else:
+        st.stop()
 
 # ------------------------------
 # Si la contraseña es correcta, carga la app
 # ------------------------------
 
+# Botón de logout en la barra lateral
+if st.sidebar.button("🚪 Cerrar sesión"):
+    st.session_state.logged_in = False
+    st.experimental_rerun()
+
 # Encabezado con logo y título
 col1, col2 = st.columns([1,5])
 with col1:
-    st.image("logo.png", width=80)  # coloca aquí tu logo en la carpeta del proyecto
+    st.image("logo.png", width=80)
 with col2:
     st.title("Portal de IA Generativa Servicios Generales")
     st.markdown("### Herramientas de apoyo para la gestión predictiva, documental y estratégica")

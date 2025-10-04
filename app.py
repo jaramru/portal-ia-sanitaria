@@ -7,6 +7,21 @@ st.set_page_config(
     layout="wide"
 )
 
+# Contraseña desde secrets
+PASSWORD = st.secrets["PASSWORD"]
+
+# Pantalla de login
+st.sidebar.title("🔒 Acceso restringido")
+password = st.sidebar.text_input("Introduce la contraseña:", type="password")
+
+if password != PASSWORD:
+    st.error("Acceso denegado ❌. Introduce la clave correcta.")
+    st.stop()
+
+# ------------------------------
+# Si la contraseña es correcta, carga la app
+# ------------------------------
+
 # Encabezado con logo y título
 col1, col2 = st.columns([1,5])
 with col1:
@@ -17,7 +32,7 @@ with col2:
 
 st.write("---")
 
-# Navegación con estilo profesional
+# Navegación principal
 st.markdown("## 📌 Selecciona la aplicación que quieras abrir:")
 
 col1, col2, col3, col4 = st.columns(4)
